@@ -11,24 +11,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ProxyFileTest {
 
     @Test
-    void returnLastEmptyWhenReadingTooManyTimes() {
+    void returnLastEmptyOnReadingTooManyTimes() {
         //given:
         ProxyFile proxyFile = new ProxyFile();
+        proxyFile.read();
+        proxyFile.read();
         //when:
-        proxyFile.read();
-        proxyFile.read();
         Optional<String> result = proxyFile.read();
         //then:
         assertFalse(result.isPresent());
     }
 
     @Test
-    void thrownExceptionWhenWritingTooManyTimes() {
+    void throwExceptionOnWritingTooManyTimes() {
         //given:
         ProxyFile proxyFile = new ProxyFile();
+        proxyFile.write("content");
+        proxyFile.write("content");
         //when:
-        proxyFile.write("content");
-        proxyFile.write("content");
         Executable executable = () -> proxyFile.write("content");
         //then:
         assertThrows(RuntimeException.class, executable);
